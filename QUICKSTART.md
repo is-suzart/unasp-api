@@ -11,9 +11,9 @@
 
 Antes de começar, certifique-se de ter:
 
-- ✅ Node.js 18+ instalado
+- ✅ [Bun](https://bun.sh) instalado (v1.0+)
 - ✅ PostgreSQL rodando
-- ✅ Yarn instalado (`npm install -g yarn`)
+- ✅ Docker e Docker Compose (opcional, para subir o banco)
 
 ---
 
@@ -22,8 +22,7 @@ Antes de começar, certifique-se de ter:
 ### 1. Instalar Dependências
 
 ```bash
-cd api
-yarn install
+bun install
 ```
 
 ### 2. Configurar Variáveis de Ambiente
@@ -64,13 +63,13 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 ### 4. Rodar as Migrations
 
 ```bash
-yarn typeorm migration:run
+bun run typeorm migration:run
 ```
 
 ### 5. Iniciar o Servidor
 
 ```bash
-yarn start:dev
+bun run start:dev
 ```
 
 A API estará rodando em `http://localhost:3000` 🎉
@@ -79,12 +78,15 @@ A API estará rodando em `http://localhost:3000` 🎉
 
 ## 📡 Testando a API
 
-### Swagger UI
+### Scalar API Reference
 
 Acesse a documentação interativa em:
+
 ```
 http://localhost:3000/api
 ```
+
+A interface Scalar oferece um cliente HTTP integrado para testar endpoints diretamente no navegador, com suporte a autenticação Bearer token.
 
 ---
 
@@ -107,6 +109,7 @@ curl -X POST http://localhost:3000/auth/register \
 ```
 
 **Resposta:**
+
 ```json
 {
   "id": "550e8400-e29b-41d4-a716-446655440000",
@@ -133,6 +136,7 @@ curl -X POST http://localhost:3000/auth/login \
 ```
 
 **Resposta:**
+
 ```json
 {
   "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
@@ -219,6 +223,7 @@ curl http://localhost:3000/communities
 ```
 
 **Resposta:**
+
 ```json
 [
   {
@@ -359,6 +364,7 @@ curl http://localhost:3000/blogs/slug/bem-vindo
 ```
 
 **Resposta:**
+
 ```json
 {
   "id": "uuid-do-blog",
@@ -483,6 +489,7 @@ Crie uma coleção com as seguintes variáveis de ambiente:
 ### Erro: "Cannot connect to database"
 
 **Solução:**
+
 ```bash
 # Verifique se o PostgreSQL está rodando
 sudo systemctl status postgresql
@@ -494,6 +501,7 @@ docker ps | grep postgres
 ### Erro: "JWT token is invalid"
 
 **Solução:**
+
 - Verifique se o token está no formato: `Bearer SEU_TOKEN`
 - Verifique se o token não expirou (padrão: 7 dias)
 - Faça login novamente para obter um novo token
@@ -501,6 +509,7 @@ docker ps | grep postgres
 ### Erro: "Route already exists"
 
 **Solução:**
+
 - Cada `route` (slug) deve ser único
 - Use nomes diferentes como: `recepcao-2`, `recepcao-sp`, etc.
 

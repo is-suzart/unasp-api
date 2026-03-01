@@ -1,44 +1,44 @@
 # Estágio de Desenvolvimento (Hot-reload)
-FROM node:20-alpine AS development
+FROM oven/bun:latest AS development
 
 WORKDIR /app
 
 # Copiar arquivos de dependências
-COPY package*.json ./
+COPY package.json bun.lock ./
 
 # Instalar TODAS as dependências (necessário para o Nest CLI)
-RUN npm install
+RUN bun install
 
 # Copiar código fonte
 COPY . .
 
 # Comando para desenvolvimento com hot-reload
-CMD ["npm", "run", "start:dev"]
+CMD ["bun", "run", "start:dev"]
 
 # ---
 
 # Estágio de Build
-FROM node:20-alpine AS builder
+FROM oven/bun:latest AS builder
 
 # Diretório de trabalho
 WORKDIR /app
 
 # Copiar arquivos de dependências
-COPY package*.json ./
+COPY package.json bun.lock ./
 
 # Instalar dependências (incluindo devDependencies para o build)
-RUN npm ci
+RUN bun install --frozen-lockfile
 
 # Copiar código fonte
 COPY . .
 
 # Build da aplicação
-RUN npm run build
+RUN bun run build
 
 # ---
 
 # Estágio de Produção
-FROM node:20-alpine
+FROM oven/bun:latest
 
 WORKDIR /app
 
@@ -46,17 +46,17 @@ WORKDIR /app
 ENV NODE_ENV=production
 
 # Copiar package.json e instalar apenas dependências de produção
-COPY package*.json ./
-RUN npm ci --only=production && npm cache clean --force
+COPY package.json bun.lock ./
+RUN bun install --frozen-lockfile --production
 
 # Copiar o build da etapa anterior
 COPY --from=builder /app/dist ./dist
 
 # Usuário não-root por segurança
-USER node
+USER bun
 
 # Expor a porta da aplicação
 EXPOSE 3000
 
 # Comando de inicialização
-CMD ["node", "dist/main"]
+CMD ["bun", "dist/main.js"]

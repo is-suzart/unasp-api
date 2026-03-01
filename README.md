@@ -15,6 +15,7 @@ Nossa API foi desenhada para ser robusta, testável e escalável, seguindo os pr
 > Tudo sobre modelos, relacionamentos, endpoints e boas práticas!
 
 ### 🧩 Estrutura de Módulos
+
 Tudo é organizadinho em módulos (ex: `auth`, `community`). Cada módulo é independente e tem suas próprias camadas:
 
 1.  **Domain**: Entidades e regras de negócio. O núcleo puro! ❤️
@@ -23,11 +24,13 @@ Tudo é organizadinho em módulos (ex: `auth`, `community`). Cada módulo é ind
 4.  **Presentation**: Controllers que cuidam das requisições HTTP. 📡
 
 ### 🛠️ Tecnologias
--   **NestJS** 🦁: Framework poderoso para Node.js.
--   **TypeORM** 🗺️: Nosso mapa para navegar no banco de dados.
--   **PostgreSQL** 🐘: Onde guardamos nossos tesouros (dados).
--   **Passport & JWT** 🛂: Segurança máxima! Ninguém passa sem crachá.
--   **Swagger** 📜: Documentação automática da API (porque ninguém merece adivinhar rotas).
+
+- **Bun** 🥟: Runtime JavaScript/TypeScript ultrarrápido.
+- **NestJS** 🦁: Framework poderoso para aplicações server-side.
+- **TypeORM** 🗺️: Nosso mapa para navegar no banco de dados.
+- **PostgreSQL** 🐘: Onde guardamos nossos tesouros (dados).
+- **Passport & JWT** 🛂: Segurança máxima! Ninguém passa sem crachá.
+- **Scalar** 📜: Documentação interativa e moderna da API (porque ninguém merece adivinhar rotas).
 
 ---
 
@@ -63,7 +66,8 @@ Temos documentação completa para você começar! 🎉
    - DTOs, Controllers, Use Cases, Repositories
    - Testes unitários e E2E
 
-5. **[📡 Swagger UI](http://localhost:3000/api)** - Documentação Interativa
+5. **[📡 Scalar API Reference](http://localhost:3000/api)** - Documentação Interativa
+   - Interface moderna com cliente HTTP integrado
    - Teste os endpoints diretamente no navegador
    - (Disponível após rodar a API)
 
@@ -71,21 +75,55 @@ Temos documentação completa para você começar! 🎉
 
 ## 🚀 Como Rodar
 
-1.  **Instale as dependências**:
-    ```bash
-    yarn install
-    ```
+### Pré-requisitos
 
-2.  **Suba o banco de dados** (se tiver Docker):
-    ```bash
-    docker-compose up -d
-    ```
+- [Bun](https://bun.sh) instalado (v1.0+)
+- Docker e Docker Compose (para o banco de dados)
 
-3.  **Rode a API**:
-    ```bash
-    yarn start:dev
-    ```
+### 1. Instale as dependências
+
+```bash
+bun install
+```
+
+### 2. Suba o banco de dados (com Docker)
+
+```bash
+docker-compose up -d unasp-api-db
+```
+
+### 3. Rode a API
+
+```bash
+bun run start:dev
+```
+
+### 4. Ou rode tudo com Docker Compose
+
+```bash
+docker-compose up
+```
+
+A API estará disponível em `http://localhost:3000` e a documentação Scalar em `http://localhost:3000/api` 🎉
 
 ---
 
-*Feito com muito café e NestJS!* ☕
+### 🌱 Seeds (Dados de Teste)
+
+```bash
+bun run seed:users
+bun run seed:communities
+bun run seed:pages
+```
+
+### 🧪 Testes
+
+```bash
+bun test              # Rodar todos os testes
+bun test --watch      # Modo watch
+bun test --coverage   # Com cobertura
+```
+
+---
+
+_Feito com muito café e NestJS!_ ☕

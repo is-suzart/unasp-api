@@ -1,40 +1,24 @@
 services:
-  unasp-api-backend:
-    build:
-      context: .
-      dockerfile: containers/backend/Dockerfile
-      target: development
-    ports:
-      - "3000:3000"
-    volumes:
-      - .:/app
-      - /app/node_modules
-    environment:
-      - NODE_ENV=development
-      - DB_HOST=unasp-api-db
-      - DB_PORT=5432
-      - DB_USERNAME=postgres
-      - DB_PASSWORD=postgres
-      - DB_DATABASE=unasp
-      - JWT_SECRET=super-secret-key-change-in-production
-    command: npm run start:dev
-    depends_on:
-      - unasp-api-db
-    networks:
-      - unasp-network
-    restart: unless-stopped
-
   unasp-api-db:
     image: postgres:15-alpine
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=unasp
+    ports:
+      - "5432:5432"
     volumes:
       - unasp-api-db-data:/var/lib/postgresql/data
+      - ./containers/database/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - unasp-network
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d unasp"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
 
 volumes:
   unasp-api-db-data:
