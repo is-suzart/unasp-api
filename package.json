@@ -20,6 +20,7 @@
         "seed:users": "bun run src/scripts/seed-users.ts",
         "seed:communities": "bun run src/scripts/seed-communities.ts",
         "seed:pages": "bun run src/scripts/seed-pages.ts",
+        "seed:menus": "bun run src/scripts/seed-menus.ts",
         "db:setup": "bun run src/scripts/setup-db.ts"
     },
     "dependencies": {
